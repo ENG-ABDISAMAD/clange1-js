@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Image Reveal Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .game-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #image-container {
+            margin-bottom: 20px;
+        }
+
+        #image-container img {
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #image-container img:hover {
+            transform: scale(1.1);
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: green;
+        }
+
+        .win-message {
+            color: gold;
+            font-size: 2rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Click to Reveal Images!</h1>
+        <p>Click the image below to reveal more images and the message!</p>
+        <div id="image-container">
+            <img src="initial-image.jpg" alt="Initial Image" id="initial-image">
+        </div>
+        <div id="hidden-images" style="display: none;">
+            <img src="ark1.jpeg" alt="Image 1" class="game-image">
+            <img src="ark2.jpeg" alt="Image 2" class="game-image">
+            <img src="ark3.jpeg" alt="Image 3" class="game-image">
+            <img src="ark4.jpg" alt="Special Image" class="game-image" id="special-image">
+        </div>
+        <div id="message"></div>
+        <button id="restart-btn" style="display:none;">Play Again</button>
+    </div>
+    <script>
+        // Get elements
+        const initialImage = document.getElementById('initial-image');
+        const hiddenImages = document.getElementById('hidden-images');
+        const message = document.getElementById('message');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        // Add click event to the initial image
+        initialImage.addEventListener('click', function() {
+            // Show the hidden images
+            hiddenImages.style.display = 'block';
+            // Hide the initial image
+            initialImage.style.display = 'none';
+        });
+
+        // Add click event to all images in the hidden images container
+        const images = document.querySelectorAll('.game-image');
+        images.forEach(image => {
+            image.addEventListener('click', function() {
+                if (this.id === 'special-image') {
+                    // Show the message when the special image is clicked
+                    message.innerHTML = '<span class="win-message">Gulste! You found the special image!</span>';
+                    restartBtn.style.display = 'inline-block';
+                    // Hide all images after the win
+                    hiddenImages.style.display = 'none';
+                } else {
+                    // Dim the wrong image with opacity (no other style changes)
+                    this.style.opacity = '0.5';
+                }
+            });
+        });
+
+        // Restart the game when the button is clicked
+        restartBtn.addEventListener('click', function() {
+            // Reset the game
+            hiddenImages.style.display = 'none';
+            initialImage.style.display = 'block';
+            message.innerText = '';
+            restartBtn.style.display = 'none';
+            // Reset opacity of all images
+            images.forEach(img => img.style.opacity = '1');
+        });
+    </script>
+</body>
+</html>
